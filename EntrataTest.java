@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class EntrataTest {
 	
-	private WebServer driver;
+	private WebDriver driver;
 
     @Before
     public void setUp() {
@@ -21,7 +21,7 @@ public class EntrataTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
     }
-
+    
     @Test
     public void testLoginPage() {
         // Test navigating to the login page
@@ -29,6 +29,24 @@ public class EntrataTest {
         WebElement loginButton = driver.findElement(By.xpath("//a[contains(text(), 'Log In')]"));
         loginButton.click();
         assertEquals("https://www.entrata.com/login", driver.getCurrentUrl());
+    }
+    
+    @Test
+    public void testNavigation() {
+        // Test navigating to different pages
+        driver.get("https://www.entrata.com/");
+        WebElement solutionsLink = driver.findElement(By.xpath("//a[text()='Solutions']"));
+        solutionsLink.click();
+        assertEquals("https://www.entrata.com/solutions", driver.getCurrentUrl());
+    }
+
+    @Test
+    public void testFormInteraction() {
+        // Test interacting with forms
+        driver.get("https://www.entrata.com/");
+        WebElement emailInput = driver.findElement(By.id("email"));
+        emailInput.sendKeys("test@example.com");
+        assertEquals("https://www.entrata.com/forms", emailInput.getAttribute("value"));
     }
 
     @Test
@@ -40,13 +58,11 @@ public class EntrataTest {
         assertTrue(driver.findElement(By.xpath("//h1[contains(text(), 'Contact Us')]")).isDisplayed());
     }
 
-    // Add more test methods as needed
-
     @After
     public void tearDown() {
         // Close the browser
         if (driver != null) {
             driver.quit();
         }
-    
+    }
 }
